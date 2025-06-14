@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مبادئ الإدارة - قيس الجازي (إصدار محسن)</title>
+    <!-- AOS Library for Scroll Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Almarai:wght@400;700&display=swap');
+
+        :root {
+            --primary-red: #e50914; /* Netflix Red - strong and vibrant */
+            --dark-charcoal: #141414; /* Very dark grey, almost black */
+            --medium-charcoal: #1f1f1f;
+            --light-grey-text: #f5f5f1;
+            --grey-text: #a0a0a0;
+            --red-hover: #f40612;
+            --card-bg: #101010; /* Slightly different from main bg for depth */
+        }
+
+        body {
+            font-family: 'Almarai', 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-charcoal);
+            color: var(--light-grey-text);
+            line-height: 1.9;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .rose-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .rose {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: rgba(200, 0, 0, 0.5); /* Darker, semi-transparent red */
+            border-radius: 50% 50% 0 50% / 60% 60% 0 60%; /* More petal-like */
+            opacity: 0.6;
+            filter: blur(1px);
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+        }
+        
+        .rose::before {
+            content: '';
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            background-color: rgba(229, 9, 20, 0.4); /* Slightly brighter red */
+            border-radius: 50% 50% 50% 0 / 60% 60% 60% 0;
+            transform: rotate(-75deg) translateX(-45%) translateY(-55%);
+            top: 50%;
+            left: 50%;
+        }
+
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg); /* More rotation */
+                opacity: 0;
+            }
+        }
+        @keyframes sway {
+            0% { margin-left: 0px; }
+            100% { margin-left: 30px; }
+        }
+
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 25px;
+            background-color: rgba(20, 20, 20, 0.85); /* Semi-transparent dark bg */
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.2); /* Subtle red glow */
+            position: relative; /* For stacking context */
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            padding: 25px 0;
+            border-bottom: 3px solid var(--primary-red);
+            margin-bottom: 40px;
+        }
+
+        header img.logo {
+            max-width: 180px; 
+            height: auto; 
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.1)); 
+        }
+
+        header h1 {
+            color: var(--primary-red);
+            margin: 10px 0;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 900;
+            font-size: 2.8em;
+            text-shadow: 0 0 8px rgba(229, 9, 20, 0.5);
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: var(--grey-text);
+            margin: 8px 0;
+        }
+        header p.main-course-title {
+            color: var(--light-grey-text);
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .student-intro {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--primary-red);
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px dashed var(--primary-red);
+            display: inline-block;
+            border-radius: 5px;
+        }
+
+        main {
+            padding: 20px 0;
+        }
+
+        section {
+            margin-bottom: 50px;
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border-left: 7px solid var(--primary-red);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.25);
+        }
+
+
+        h2.main-content-title, h3.topic-title {
+            color: var(--primary-red);
+            border-bottom: 2px solid var(--primary-red);
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 2em;
+        }
+        h3.topic-title {
+            font-size: 1.8em;
+        }
+        
+        h4 {
+             color: var(--red-hover); 
+             font-size: 1.3em;
+        }
+
+        ul {
+            list-style-type: none; 
+            padding-right: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-right: 25px; 
+            position: relative;
+        }
+        li::before {
+            content: "♦"; 
+            color: var(--primary-red);
+            position: absolute;
+            right: 0;
+            top: 1px;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: var(--red-hover);
+            font-weight: 700;
+        }
+
+        .quiz-section {
+            background-color: var(--medium-charcoal);
+            padding: 30px;
+            border-radius: 8px;
+            border: 2px solid var(--primary-red);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.3);
+        }
+
+        .quiz-question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            border: 1px solid #333;
+            transition: border-color 0.3s;
+        }
+
+        .quiz-question p {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: var(--light-grey-text);
+        }
+
+        .quiz-options label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 12px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: var(--grey-text);
+        }
+        .quiz-options label:hover {
+            background-color: var(--primary-red);
+            color: var(--light-grey-text);
+            border-color: var(--red-hover);
+        }
+        .quiz-options input[type="radio"]:checked + span {
+             font-weight: bold;
+             color: var(--red-hover);
+        }
+        .quiz-options input[type="radio"] {
+            margin-left: 10px; 
+            accent-color: var(--primary-red); 
+        }
+
+        #submit-quiz {
+            display: block;
+            margin: 30px auto 0;
+            padding: 15px 35px;
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: bold;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            text-transform: uppercase;
+        }
+
+        #submit-quiz:hover {
+            background-color: var(--red-hover);
+            transform: scale(1.05);
+        }
+
+        #quiz-results {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.3em;
+        }
+        #quiz-results.correct-high { 
+            background-color: rgba(0, 128, 0, 0.2); 
+            color: #90ee90; 
+            border: 1px solid #2e8b57; 
+        }
+        #quiz-results.correct-mid { 
+            background-color: rgba(255, 165, 0, 0.2); 
+            color: #ffdab9; 
+            border: 1px solid #ffa500; 
+        }
+        #quiz-results.incorrect-low { 
+             background-color: rgba(139, 0, 0, 0.2); 
+             color: #ff7f7f; 
+             border: 1px solid var(--primary-red);
+        }
+        .feedback {
+            font-size: 0.95em;
+            margin-top: 8px;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .feedback.correct-answer { background-color: rgba(0,100,0,0.3); color: #90ee90; font-weight: bold;}
+        .feedback.wrong-answer { background-color: rgba(100,0,0,0.3); color: #ff8c8c; font-weight: bold; }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+        footer p {
+            text-align:center;
+            font-size: 0.9em;
+            color: var(--grey-text);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="rose-container"></div>
+
+    <div class="container" data-aos="fade-up" data-aos-duration="1000">
+        <header>
+            <img src="https://upload.wikimedia.org/wikipedia/ar/thumb/6/66/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A5%D8%B1%D8%A8%D8%AF_%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A%D8%A91.jpeg/131px-%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%A5%D8%B1%D8%A8%D8%AF_%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A%D8%A91.jpeg" alt="شعار جامعة إربد الأهلية" class="logo" data-aos="zoom-in" data-aos-duration="1200">
+            <h1 data-aos="fade-down" data-aos-delay="200">جامعة إربد الأهلية</h1>
+            <p data-aos="fade-down" data-aos-delay="300">كلية العلوم الإدارية والمالية</p>
+            <p data-aos="fade-down" data-aos-delay="400">قسم إدارة الاعمال</p>
+            <p class="main-course-title" data-aos="fade-down" data-aos-delay="500">مساق مبادئ الإدارة</p>
+            <p data-aos="fade-down" data-aos-delay="600">2025</p>
+            <p class="student-intro" data-aos="zoom-in" data-aos-delay="800">اعداد وتقديم الطالب: قيس الجازي</p>
+        </header>
+
+        <main>
+            <h2 class="main-content-title" style="text-align:center;" data-aos="fade-down">المحتوى الدراسي</h2>
+
+            <!-- المبحث الأول -->
+            <section id="mabahath1" data-aos="fade-right">
+                <h3 class="topic-title">المبحث الأول - اتخاذ القرار</h3>
+                
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <h4>اتخاذ القرار</h4>
+                    <p><strong>اتخاذ القرار:</strong> هو اختيار بين مجموعة حلول مطروحة لمشكلة ما او ازمة أو تسيير عمل معين.</p>
+                    <h4>أهمية اتخاذ القرار</h4>
+                    <p>اتخاذ القرار هو جوهر العملية الإدارية.</p>
+                    <p>يرتبط اتخاذ القرار بجميع المستويات الإدارية وبمختلف الوظائف وبجميع العمليات الجارية في المنظمة.</p>
+                    <p><strong>اتخاذ القرار الخاطئ يسبب:</strong></p>
+                    <ul>
+                        <li>اخفاق المنظمة في تحقيق أهدافها.</li>
+                        <li>تعرض المنظمة للمشكلات وعدم وصولها للاستقرار او موجهة المنافسة.</li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="150">
+                    <h4>مراحل اتخاذ القرار</h4>
+                    <p><strong>المرحلة الأولى: تشخيص المشكلة:</strong></p>
+                    <ul>
+                        <li>تحديد طبيعة الموقف الذي خلق المشكلة ودرجة أهمية المشكلة.</li>
+                        <li>عدم الخلط بين الأعراض والأسباب.</li>
+                        <li>الوقت الملائم للتصدي للحلول واتخاذ القرار الفعال.</li>
+                    </ul>
+                    <p><strong>المرحلة الثانية: جمع البيانات والمعلومات:</strong></p>
+                    <ul>
+                        <li>القدرة على اتخاذ القرار الصحيح يعتمد على قدرة المدير في الحصول على أكبر قدر من البيانات الدقيقة والمعلومات المحايدة والملائمة زمنيا من مصادرها المختلفة، ومن ثم تحديد احسن طريقة للحصول عليها لتحليلها. البيانات المحصلة نوعين:</li>
+                        <li>معلومات وبيانات أولية وثانوية.</li>
+                        <li>معلومات وبيانات كمية.</li>
+                        <li>بيانات ومعلومات نوعية.</li>
+                        <li>الأمور والحقائق.</li>
+                    </ul>
+                </div>
+                
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <h4>مراحل اتخاذ القرار (تابع)</h4>
+                    <p><strong>المرحلة الثالثة: تحديد الحلول المتاحة وتقويمها:</strong></p>
+                    <p>يتوقف تحديد الحلول المناسبة على وضع المنظمة، السياسات التي تطبقها، الإمكانيات المادية، الوقت المتاح امام متخذ القرار اتجاهات المدير وقدراته على التفكير الإبداعي والمنطقي.</p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="250">
+                    <h4>مراحل اتخاذ القرار (تابع)</h4>
+                    <p><strong>المرحلة الرابعة: اختيار الحل المناسب للمشكلة:</strong></p>
+                    <p>تتم عملية المفاضلة بين البدائل المتاحة واختيار البديل الأنسب وفقا لمعايير منها:</p>
+                    <ul>
+                        <li>تحقيق الحل للهدف.</li>
+                        <li>اتفاق الحل مع أهمية المنظمة وأهدافها.</li>
+                        <li>قبول أفراد المنظمة للحل.</li>
+                        <li>درجة تأثير الحل على العلاقات الإنسانية والمعاملات الناجحة بين أفراد المنظمة.</li>
+                        <li>درجة السرعة المطلوبة في الحل.</li>
+                        <li>مدى ملائمة كل حل للبيئة الخارجية.</li>
+                        <li>القيم وانماط السلوك ونمط الاستهلاك.</li>
+                        <li>المعلومات المتاحة عن الظروف البيئية.</li>
+                        <li>كفاءة الحل، والعائد الذي سيحققه.</li>
+                    </ul>
+                </div>
+                
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <h4>مراحل اتخاذ القرار (تابع)</h4>
+                    <p><strong>المرحلة الخامسة: متابعة تنفيذ القرار وتقويمه:</strong></p>
+                    <ul>
+                        <li>يجب اتخاذ القرار بوقت مناسب لتوفير أحسن نتائج.</li>
+                        <li>مراقبة نتائج القرار عند تطبيقية لقياس مدى فاعليته.</li>
+                        <li>مراعاة الدقة والواقعية في تحليل ومتابعة نتائج القرار، لتحديد مواقع الضعف واسبابها وطرق علاجها.</li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="350">
+                    <h4>المشاركة في اتخاذ القرار</h4>
+                    <p><strong>مزايا مشاركة العاملين:</strong></p>
+                    <ul>
+                        <li>تساعد على تحسين نوعية القرار، وجعله أكثر ثبات وقبول لدى العاملين.</li>
+                        <li>تؤدي المشاركة الى تحقيق الثقة المتبادلة بين المدير وأفراد المنظمة.</li>
+                        <li>لها أثر في تنمية القيادات الإدارية في المستويات الدنيا من التنظيم.</li>
+                        <li>تساعد في رفع الروح المعنوية لأفراد التنظيم.</li>
+                    </ul>
+                </div>
+                
+                <div data-aos="fade-up" data-aos-delay="400">
+                    <h4>العوامل المؤثرة في اتخاذ القرار</h4>
+                    <ul>
+                        <li>القيم والمعتقدات.</li>
+                        <li>المؤثرات الشخصية.</li>
+                        <li>الميول والطموحات.</li>
+                        <li>العوامل النفسية.</li>
+                    </ul>
+                </div>
+                
+                <div data-aos="fade-up" data-aos-delay="450">
+                    <h4>أنماط متخذي القرار</h4>
+                    <ul>
+                        <li><strong>المدير التقليدي:</strong> يقوم المدير بجمع أكبر قدر من المعلومات من الموضوعات المراد اتخاذ القرار بشأنه.</li>
+                        <li><strong>المدير المخاطر:</strong> يتخذ المدير هنا القرار في ظل أدنى قدر من المعلومات رغم علمه بمدى المخاطرة.</li>
+                        <li><strong>المدير العقلاني:</strong> التفكير برشد وعقلانية ويطبق الطريقة العلمية في اتخاذ القرار.</li>
+                        <li><strong>المدير متجنب المشاكل:</strong> يفعل أي شي لتجنب اتخاذ القرار.</li>
+                        <li><strong>المدير المتردد:</strong> لا يستطيع المدير إصدار قرار نهائي.</li>
+                        <li><strong>المدير العاطفي:</strong> مصدر قرارته مشاعره وعاطفته.</li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="500">
+                    <h4>صعوبات التي تواجه متخذ القرار</h4>
+                    <ul>
+                        <li>نقص البيانات والمعلومات المتاحة عند اتخاذ القرار.</li>
+                        <li>صعوبة تحديد المشكلة المراد معالجتها خصوصا إذا كانت متداخله مع أكثر من عنصر.</li>
+                        <li>صعوبة تحديد الأهداف المراد إنجازها.</li>
+                        <li>انعدام القدرة على تحديد البدائل المتاحة بدقة وعدم القدرة على تحديد المنافع.</li>
+                        <li>كون عملية اتخاذ القرار مطلوب إنجازها بسرعة، قد لا تتوفر معلومات بالوقت المناسب، او قد يكون الوقت المتاح غير كافي.</li>
+                    </ul>
+                </div>
+                
+                <div data-aos="fade-up" data-aos-delay="550">
+                    <h4>مبادئ عملية اتخاذ القرار</h4>
+                    <ul>
+                        <li>تتسم عملية اتخاذ القرار بتأثيرها بعناصر ملموسة وغير ملموسة الامر الذي يتطلب التفكير العملي والمرن والتحليل المنطقي لها.</li>
+                        <li>لا بد ان تكون نتيجة القرار هي تحقيق الهدف المرسوم.</li>
+                        <li>اتخاذ القرار عملية ذهنية يجب تحويلها الى عمل مادي.</li>
+                        <li>الاعتراف بحتمية التغيير.</li>
+                        <li>وضع نظام فعال لتنفيذ القرار.</li>
+                        <li>الاعتراف بأن القرار سيرتب عنه سلسلة من الاعمال.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- المبحث الثاني -->
+            <section id="mabahath2" data-aos="fade-left">
+                <h3 class="topic-title">المبحث الثاني - أنواع وأساليب القرارات الإدارية</h3>
+
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <h4>أولاً: أنواع القرارات الإدارية</h4>
+                    <p><strong>أ. قرارات تقليدية وتتضمن:</strong></p>
+                    <ul>
+                        <li><strong>قرارات تنفيذية:</strong> تتعلق بالمشكلات البسيطة المتكررة / يمكن للمدير البث فيها فورا واتخاذ قرارها مثل الحضور والغياب.</li>
+                        <li><strong>قرارات تكتيكية:</strong> قرارات متكررة ولكنها ليست بسيطة، ولكنها أكثر فنية. ويكون المدير التخصصي هو من يتخذها.</li>
+                    </ul>
+
+                    <p><strong>ب. قرارات غير تقليدية:</strong></p>
+                    <ul>
+                        <li><strong>قرارات حيوية:</strong> تتعلق بمشكلات حيوية تحتاج لحلها الى تفاهم ومناقشة وتبادل الرأي على نطاق واسع، هنا يبادر المدير بمشورة مساعديه ومستشاريه والفنيين والإداريين الذي يعنيهم امر القرار.</li>
+                        <li><strong>القرارات الإستراتيجية:</strong> هي قرارات غير تقليدية تتصل بمشكلات وابعاد متعددة وهي قرارات تتطلب البحث المتعمق والدراسة المتأنية والمستفيضة.</li>
+                    </ul>
+                    
+                    <p><strong>ج. قرارات حسب الأهمية:</strong></p>
+                    <p>معايير أهمية القرار: نتائجها، عدد الافراد الذين سيتاثرون بها، المدة الزمنية المتاحة لاتخاذ القرار، درجة التكرار، درجة المرونة من حيث القدرة على تعديل او تغير القرار.</p>
+
+                    <p><strong>د. قرارات حسب المدى الزمني:</strong></p>
+                    <ul>
+                        <li><strong>قرارات بعيدة المدى:</strong> القرارات الاستراتيجية (لأكثر من 3 سنوات).</li>
+                        <li><strong>قرارات متوسطة المدى:</strong> قرارات تشغيلية (من سنة لأقل من 3 سنوات).</li>
+                        <li><strong>قرارات قصيرة المدى:</strong> قرارات تنفيذية (اقل من سنة).</li>
+                    </ul>
+
+                    <p><strong>هـ. قرارات من حيث الجهد المبذول:</strong></p>
+                    <ul>
+                        <li><strong>قرار مبرمج:</strong> هو قرار متكرر الحدوث / روتيني.</li>
+                        <li><strong>قرار غير مبرمج:</strong> هو قرار غير متكرر الحدوث / يتطلب اتخاذه قدرات عقلية وفكرية.</li>
+                    </ul>
+                    
+                    <p><strong>و. قرارات وفقا لطريقة اتخاذها:</strong></p>
+                    <ul>
+                        <li><strong>قرارات فردية:</strong> تتخذ من قبل المدير دون الاستعانة بأحد.</li>
+                        <li><strong>قرارات جماعية:</strong> تتخذ بالمشاركة والمشاورة.</li>
+                    </ul>
+
+                    <p><strong>ز. قرارات وفقا لطبيعة الجهة التي ستتخذها:</strong></p>
+                    <ul>
+                        <li><strong>قرار تنظيمي:</strong> يتخذها المدير / الرئيس وفقا لموقعه بالهيكل التنظيمي.</li>
+                        <li><strong>قرار شخصي:</strong> هي قرارات تتأثر بالميول الشخصية وطبيعية الخبرة المتراكمة ولا يتم تحويل صلاحيات اتخاذها لاي مستوى اداري معين.</li>
+                    </ul>
+
+                    <p><strong>ح. قرارات حسب درجة الثقة:</strong></p>
+                    <ul>
+                        <li><strong>قرارات مؤكدة:</strong> تتسم بدرجة عالية من التأكيد من حيث دقة المعلومات التي استندت عليها.</li>
+                        <li><strong>قرارات في ظل المخاطرة:</strong> تحديد احتمال حصول شي في ضوء تحليل والنتائج.</li>
+                        <li><strong>حالة عدم التأكد:</strong> حالة عدم استقرار او ثبات في الظروف المحيطة مما يجعل مخاطرها عالية.</li>
+                    </ul>
+                </div>
+                
+                <div data-aos="fade-up" data-aos-delay="150">
+                    <h4>أنواع القرارات الاستراتيجية</h4>
+                    <ul>
+                        <li><strong>قرار استراتيجي على مستوى المنظمة:</strong> عمومية على مستوى المنظمة تركز على التغيير الاستراتيجية للمنظمة.</li>
+                        <li><strong>قرارات استراتيجية على مستوى وحدات الاعمال:</strong> قرارات وسط بين المستوى الأول والثالث، اقل كلفة من القرار الاستراتيجي وأكثر من المستوى الوظيفي.</li>
+                        <li><strong>قرارات على المستوى الوظيفي:</strong> قصيرة الأجل، أكثر تحديد وقابلية للقياس الكمي واقل درجة من الخطورة.</li>
+                    </ul>
+                </div>
+                
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <h4>الأساليب الكمية في اتخاذ القرار</h4>
+                    <p><strong>أ. بحوث العمليات:</strong></p>
+                    <p>تعتمد على اظهار النتائج لتعطي للمدير تصور شامل عن المشكلة. التطبيق الرياضي للمشكلات الإدارية / استخدام برمجيات رقمية.</p>
+                    <p><strong>مميزات الأسلوب:</strong></p>
+                    <ul>
+                        <li>يعطي وصفا دقيق للمشكلة والعوامل المؤثرة والمتداخلة.</li>
+                        <li>يحد ويعرف البيانات اللازمة وأفضل البدائل.</li>
+                        <li>مقارنة البدائل المقترحة كحلول واختيار أفضلها.</li>
+                        <li>تبني نتائج وتغيير في الروتين او نظام المنظمة.</li>
+                        <li>يحدد بدقة البدائل المقترحة.</li>
+                    </ul>
+                    <p><strong>سلبيات الأسلوب:</strong> تبسيط المشكلة، وتركيزه المفرط على العوامل وقياسها كما واهمال ما لا يمكنه قياسه كما.</p>
+                
+                    <p><strong>ب. نظرية الاحتمالات:</strong></p>
+                    <p>قيام متخذ القرار بوضع احتمالات مستقبلية وقياسها كميا من خلال ثلاث طرق قياس الاحتمالات:</p>
+                    <ul>
+                        <li><strong>الاحتمال الشخصي:</strong> يتحدد بموجبه درجة فهم الشخص.</li>
+                        <li><strong>الاحتمال الموضوعي:</strong> يتحدد من إجراء تجربة معملية او ميدانية.</li>
+                        <li><strong>الاحتمال التكراري:</strong> نسبة الاحتمال على أساس معدل التكرار.</li>
+                    </ul>
+
+                    <p><strong>ج. أسلوب دراسة الحالات:</strong></p>
+                    <p>تعريف وتحديد المشكلة والتفكير في أسبابها وأبعادها وتصور الحلول البديلة لها استنادا الى المعلومات المتاحة عن المشاكل.</p>
+
+                    <p><strong>د. أسلوب التحليل الشبكي (شجرة القرارات):</strong></p>
+                    <p>شكل بياني لتسهيل عملية المفاضلة بين البدائل، تفرض ان هناك سلسلة من التأثيرات التي تؤثر في عملية اتخاذ القرار.</p>
+                    <p>اتخاذ القرار نظام فرعي يكون له ردة فعل في البيئة والنظام.</p>
+                    <p>يجب متابعة القرار منذ البدء وحتى اتخاذ شكله النهائي.</p>
+
+                    <p><strong>هـ. أسلوب المحاكاة:</strong></p>
+                    <p>يعتمد هذا الأسلوب على محاولة تصميم نموذج يماثل الواقع الفعلي وإخضاع لبعض التجارب لتغيير بعض اجزاءه وتثبيت الأخرى والتنبؤ بالنتائج. الحاسوب ساعد في تمثيل الظواهر واخضاعها للتجارب والتحليل.</p>
+                    
+                    <p><strong>و. العصف الذهني:</strong></p>
+                    <p>وسيلة للحصول على أكبر عدد من الأفكار لمجموعة من الافراد في وقت قصير.</p>
+                </div>
+            </section>
+
+            <!-- Quiz Section -->
+            <section class="quiz-section" data-aos="zoom-in-up">
+                <h2 class="main-content-title" style="text-align:center;">امتحان محوسب</h2>
+                <form id="quiz-form">
+                    <!-- Questions will be injected here by JavaScript -->
+                </form>
+                <button id="submit-quiz">إرسال الإجابات</button>
+                <div id="quiz-results"></div>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>© 2024 مبادئ الإدارة - قيس الجازي. جميع الحقوق محفوظة.</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true, 
+            mirror: false, 
+        });
+
+        // --- Falling Roses Animation ---
+        const roseContainer = document.querySelector('.rose-container');
+        const numberOfRoses = 35; 
+
+        function createRose() {
+            const rose = document.createElement('div');
+            rose.classList.add('rose');
+            
+            rose.style.left = Math.random() * 100 + 'vw';
+            rose.style.animationDuration = (Math.random() * 6 + 7) + 's'; 
+            const swayDuration = (Math.random() * 2 + 2) + 's'; 
+            rose.style.animationDelay = Math.random() * 4 + 's';
+            
+            rose.style.setProperty('--sway-duration', swayDuration);
+
+            const size = Math.random() * 10 + 20; 
+            rose.style.width = size + 'px';
+            rose.style.height = size + 'px';
+
+            roseContainer.appendChild(rose);
+
+            setTimeout(() => {
+                rose.remove();
+            }, (parseFloat(rose.style.animationDuration.replace('s','')) + parseFloat(rose.style.animationDelay.replace('s',''))) * 1000 + 1000);
+        }
+
+        for (let i = 0; i < numberOfRoses; i++) {
+            createRose();
+        }
+        setInterval(createRose, 4000); 
+
+        // --- Quiz Logic (Using the same questions as before for brevity) ---
+        const quizForm = document.getElementById('quiz-form');
+        const submitButton = document.getElementById('submit-quiz');
+        const resultsDiv = document.getElementById('quiz-results');
+
+        const questions = [
+            // ... (نفس قائمة الأسئلة الـ 40 من الرد السابق - يجب استبدالها) ...
+            // Sample questions - You need to create 40 based on the content
+            // Mabhath 1
+            {
+                question: "ما هو التعريف الأساسي لاتخاذ القرار؟",
+                type: "mcq",
+                options: [
+                    "عملية تحليل البيانات فقط",
+                    "اختيار بين مجموعة حلول مطروحة لمشكلة ما",
+                    "تنفيذ الأوامر الإدارية",
+                    "جمع المعلومات دون تحليل"
+                ],
+                answer: "اختيار بين مجموعة حلول مطروحة لمشكلة ما",
+                topic: "اتخاذ القرار"
+            },
+            {
+                question: "اتخاذ القرار الخاطئ يؤدي إلى اخفاق المنظمة في تحقيق أهدافها.",
+                type: "tf",
+                answer: true,
+                topic: "أهمية اتخاذ القرار"
+            },
+            {
+                question: "أي مما يلي يعتبر أول مرحلة في عملية اتخاذ القرار؟",
+                type: "mcq",
+                options: [
+                    "جمع البيانات والمعلومات",
+                    "تحديد الحلول المتاحة",
+                    "تشخيص المشكلة",
+                    "متابعة تنفيذ القرار"
+                ],
+                answer: "تشخيص المشكلة",
+                topic: "مراحل اتخاذ القرار"
+            },
+            {
+                question: "البيانات الكمية والنوعية هي جزء من مرحلة تشخيص المشكلة.",
+                type: "tf",
+                answer: false, // It's part of "جمع البيانات والمعلومات"
+                topic: "مراحل اتخاذ القرار"
+            },
+            {
+                question: "يعتمد تحديد الحلول المناسبة على وضع المنظمة وإمكانياتها المادية فقط.",
+                type: "tf",
+                answer: false, // Also policies, time, manager's abilities etc.
+                topic: "مراحل اتخاذ القرار"
+            },
+            {
+                question: "من معايير اختيار الحل الأنسب للمشكلة:",
+                type: "mcq",
+                options: [
+                    "تكلفة الحل فقط",
+                    "سرعة الحل فقط",
+                    "تحقيق الحل للهدف وقبول أفراد المنظمة له",
+                    "رأي المدير الشخصي فقط"
+                ],
+                answer: "تحقيق الحل للهدف وقبول أفراد المنظمة له",
+                topic: "مراحل اتخاذ القرار"
+            },
+            {
+                question: "متابعة تنفيذ القرار وتقويمه هي المرحلة الأخيرة في عملية اتخاذ القرار.",
+                type: "tf",
+                answer: true,
+                topic: "مراحل اتخاذ القرار"
+            },
+            {
+                question: "من مزايا مشاركة العاملين في اتخاذ القرار:",
+                type: "mcq",
+                options: [
+                    "إبطاء عملية اتخاذ القرار",
+                    "زيادة تكاليف القرار",
+                    "تحسين نوعية القرار وزيادة قبوله",
+                    "تقليل سلطة المدير"
+                ],
+                answer: "تحسين نوعية القرار وزيادة قبوله",
+                topic: "المشاركة في اتخاذ القرار"
+            },
+            {
+                question: "العوامل النفسية لا تؤثر في اتخاذ القرار.",
+                type: "tf",
+                answer: false,
+                topic: "العوامل المؤثرة في اتخاذ القرار"
+            },
+            {
+                question: "المدير الذي يتخذ القرار في ظل أدنى قدر من المعلومات رغم علمه بالمخاطرة يسمى:",
+                type: "mcq",
+                options: ["المدير التقليدي", "المدير العقلاني", "المدير المخاطر", "المدير المتردد"],
+                answer: "المدير المخاطر",
+                topic: "أنماط متخذي القرار"
+            },
+            {
+                question: "المدير العاطفي يعتمد على الحقائق والبيانات بشكل أساسي في قراراته.",
+                type: "tf",
+                answer: false, // يعتمد على مشاعره وعاطفته
+                topic: "أنماط متخذي القرار"
+            },
+            {
+                question: "من الصعوبات التي تواجه متخذ القرار نقص البيانات والمعلومات.",
+                type: "tf",
+                answer: true,
+                topic: "صعوبات تواجه متخذ القرار"
+            },
+            {
+                question: "من مبادئ عملية اتخاذ القرار أن تكون نتيجته تحقيق الهدف المرسوم.",
+                type: "tf",
+                answer: true,
+                topic: "مبادئ عملية اتخاذ القرار"
+            },
+            // Mabhath 2
+            {
+                question: "القرارات المتعلقة بالمشكلات البسيطة المتكررة مثل الحضور والغياب هي قرارات:",
+                type: "mcq",
+                options: ["تكتيكية", "استراتيجية", "تنفيذية", "حيوية"],
+                answer: "تنفيذية",
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرارات التكتيكية هي قرارات بسيطة وغير فنية.",
+                type: "tf",
+                answer: false, // هي أكثر فنية وليست بسيطة تماماً
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرارات الحيوية تتطلب تفاهم ومناقشة على نطاق واسع.",
+                type: "tf",
+                answer: true,
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرارات الاستراتيجية هي قرارات تقليدية ومتكررة.",
+                type: "tf",
+                answer: false, // هي غير تقليدية وغير متكررة عادةً
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "من معايير أهمية القرار:",
+                type: "mcq",
+                options: ["عدد الأفراد المتأثرين به فقط", "نتائجه ودرجة تكراره ومرونته", "سرعة اتخاذه فقط", "تكلفته فقط"],
+                answer: "نتائجه ودرجة تكراره ومرونته",
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرارات الاستراتيجية هي عادة قرارات قصيرة المدى (أقل من سنة).",
+                type: "tf",
+                answer: false, // هي بعيدة المدى (أكثر من 3 سنوات)
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرار المبرمج هو قرار روتيني ومتكرر الحدوث.",
+                type: "tf",
+                answer: true,
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرارات الفردية تتخذ بالمشاركة والمشاورة.",
+                type: "tf",
+                answer: false, // تتخذ من قبل المدير دون استشارة
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرار التنظيمي يتخذه المدير وفقاً لموقعه في الهيكل التنظيمي.",
+                type: "tf",
+                answer: true,
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرارات في ظل المخاطرة تعني أن المعلومات مؤكدة تماماً.",
+                type: "tf",
+                answer: false, // تعني وجود احتمال لعدة نتائج
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرار الاستراتيجي على مستوى المنظمة يركز على:",
+                type: "mcq",
+                options: ["التشغيل اليومي", "التغيير الاستراتيجي للمنظمة", "قرارات الأقسام فقط", "الأمور الروتينية"],
+                answer: "التغيير الاستراتيجي للمنظمة",
+                topic: "أنواع القرارات الاستراتيجية"
+            },
+            {
+                question: "القرارات على المستوى الوظيفي هي قرارات طويلة الأجل وأقل تحديداً.",
+                type: "tf",
+                answer: false, // هي قصيرة الأجل وأكثر تحديداً
+                topic: "أنواع القرارات الاستراتيجية"
+            },
+            {
+                question: "بحوث العمليات تعتمد على التطبيق الرياضي للمشكلات الإدارية.",
+                type: "tf",
+                answer: true,
+                topic: "الأساليب الكمية"
+            },
+            {
+                question: "من سلبيات أسلوب بحوث العمليات أنه يعقد المشكلة أكثر.",
+                type: "tf",
+                answer: false, // من سلبياته تبسيط المشكلة
+                topic: "الأساليب الكمية"
+            },
+            {
+                question: "الاحتمال الشخصي يتحدد بناءً على تجربة معملية أو ميدانية.",
+                type: "tf",
+                answer: false, // هذا هو الاحتمال الموضوعي
+                topic: "الأساليب الكمية"
+            },
+            {
+                question: "شجرة القرارات هي شكل بياني لتسهيل المفاضلة بين البدائل.",
+                type: "tf",
+                answer: true,
+                topic: "الأساليب الكمية"
+            },
+            {
+                question: "أسلوب المحاكاة يعتمد على تصميم نموذج يماثل الواقع الفعلي.",
+                type: "tf",
+                answer: true,
+                topic: "الأساليب الكمية"
+            },
+            {
+                question: "العصف الذهني يهدف إلى الحصول على فكرة واحدة مركزة من شخص واحد.",
+                type: "tf",
+                answer: false, // يهدف للحصول على أكبر عدد من الأفكار من مجموعة
+                topic: "الأساليب الكمية"
+            },
+            // Add 10 more questions to reach 40.
+             {
+                question: "المدير التقليدي يتجنب جمع الكثير من المعلومات قبل اتخاذ القرار.",
+                type: "tf",
+                answer: false, // المدير التقليدي يجمع أكبر قدر من المعلومات
+                topic: "أنماط متخذي القرار"
+            },
+            {
+                question: "تحديد الأهداف المراد إنجازها يعتبر من الصعوبات التي قد تواجه متخذ القرار.",
+                type: "tf",
+                answer: true,
+                topic: "صعوبات تواجه متخذ القرار"
+            },
+            {
+                question: "الاعتراف بحتمية التغيير هو أحد مبادئ عملية اتخاذ القرار.",
+                type: "tf",
+                answer: true,
+                topic: "مبادئ عملية اتخاذ القرار"
+            },
+            {
+                question: "القرارات التشغيلية هي عادة قرارات:",
+                type: "mcq",
+                options: ["بعيدة المدى", "متوسطة المدى", "قصيرة المدى", "غير محددة المدى"],
+                answer: "متوسطة المدى",
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرار غير المبرمج يتطلب قدرات عقلية وفكرية لاتخاذه.",
+                type: "tf",
+                answer: true,
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "القرارات الشخصية يمكن بسهولة تحويل صلاحيات اتخاذها لأي مستوى إداري.",
+                type: "tf",
+                answer: false, // لا يتم تحويل صلاحياتها عادةً
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "في حالة عدم التأكد، تكون الظروف المحيطة مستقرة وثابتة.",
+                type: "tf",
+                answer: false, // تكون غير مستقرة مما يزيد المخاطر
+                topic: "أنواع القرارات الإدارية"
+            },
+            {
+                question: "قرارات وحدات الأعمال الاستراتيجية هي أكثر كلفة من القرار الاستراتيجي العام للمنظمة.",
+                type: "tf",
+                answer: false, // هي أقل كلفة
+                topic: "أنواع القرارات الاستراتيجية"
+            },
+            {
+                question: "الاحتمال التكراري يعتمد على درجة فهم الشخص للموقف.",
+                type: "tf",
+                answer: false, // هذا هو الاحتمال الشخصي. التكراري يعتمد على معدل التكرار.
+                topic: "الأساليب الكمية"
+            },
+            {
+                question: "أسلوب دراسة الحالات يركز على تحليل رياضي دقيق للمشكلة.",
+                type: "tf",
+                answer: false, // يركز على تعريف وتحديد المشكلة وأسبابها وتصور الحلول.
+                topic: "الأساليب الكمية"
+            }
+        ];
+
+        function renderQuiz() {
+            let quizHTML = '';
+            questions.forEach((q, index) => {
+                quizHTML += `<div class="quiz-question" id="question-${index}" data-aos="fade-up" data-aos-delay="${index * 30}">`; 
+                quizHTML += `<p>${index + 1}. ${q.question}</p>`;
+                quizHTML += `<div class="quiz-options">`;
+                if (q.type === "mcq") {
+                    q.options.forEach(option => {
+                        quizHTML += `
+                            <label>
+                                <input type="radio" name="q${index}" value="${option}">
+                                <span>${option}</span>
+                            </label>
+                        `;
+                    });
+                } else if (q.type === "tf") {
+                    quizHTML += `
+                        <label>
+                            <input type="radio" name="q${index}" value="true">
+                            <span>صح</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="q${index}" value="false">
+                            <span>خطأ</span>
+                        </label>
+                    `;
+                }
+                quizHTML += `</div><div class="feedback" id="feedback-${index}"></div></div>`;
+            });
+            quizForm.innerHTML = quizHTML;
+        }
+
+        submitButton.addEventListener('click', () => {
+            let score = 0;
+            let answeredQuestions = 0;
+            questions.forEach((q, index) => {
+                const selectedOption = quizForm.querySelector(`input[name="q${index}"]:checked`);
+                const feedbackEl = document.getElementById(`feedback-${index}`);
+                const questionEl = document.getElementById(`question-${index}`);
+
+                if (selectedOption) {
+                    answeredQuestions++;
+                    let userAnswer = selectedOption.value;
+                    if (q.type === "tf") {
+                        userAnswer = (userAnswer === "true");
+                    }
+
+                    if (userAnswer === q.answer) {
+                        score++;
+                        feedbackEl.textContent = "إجابة صحيحة!";
+                        feedbackEl.className = 'feedback correct-answer';
+                        questionEl.style.borderColor = 'rgba(0, 180, 0, 0.7)'; 
+                    } else {
+                        feedbackEl.textContent = `إجابة خاطئة. الإجابة الصحيحة هي: ${q.type === 'tf' ? (q.answer ? 'صح' : 'خطأ') : q.answer}`;
+                        feedbackEl.className = 'feedback wrong-answer';
+                        questionEl.style.borderColor = 'rgba(180, 0, 0, 0.7)'; 
+                    }
+                } else {
+                    feedbackEl.textContent = "لم يتم اختيار إجابة.";
+                    feedbackEl.className = 'feedback wrong-answer';
+                    questionEl.style.borderColor = 'rgba(255, 165, 0, 0.7)'; 
+                }
+            });
+            
+            if(answeredQuestions < questions.length && quizForm.querySelectorAll('input[type="radio"]:checked').length < questions.length){
+                 resultsDiv.innerHTML = `<h3>يرجى الإجابة على جميع الأسئلة!</h3><p>أجبت على ${answeredQuestions} من ${questions.length} سؤال.</p>`;
+                 resultsDiv.className = 'quiz-results incorrect-low'; 
+                 resultsDiv.scrollIntoView({ behavior: 'smooth' });
+                 return; 
+            }
+
+            resultsDiv.innerHTML = `<h3>نتيجتك: ${score} من ${questions.length} (${((score/questions.length)*100).toFixed(1)}%)</h3>`;
+            const percentage = (score / questions.length) * 100;
+            if (percentage >= 80) {
+                 resultsDiv.className = 'quiz-results correct-high';
+            } else if (percentage >= 50) {
+                 resultsDiv.className = 'quiz-results correct-mid';
+            } else {
+                 resultsDiv.className = 'quiz-results incorrect-low';
+            }
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        renderQuiz();
+    </script>
+</body>
+</html>
